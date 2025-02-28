@@ -1,0 +1,50 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* General styles for the grid */
+  .pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1400px;
+  }
+
+  /* Styles for each card */
+  .pokemon-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+    text-align: center;
+    height: 265px;
+    width: 220px;
+  }
+
+  .pokemon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Styles for the Pokémon name */
+  .pokemon-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #333;
+  }
+
+  /* Styles for the Pokémon image */
+  .pokemon-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+}
