@@ -48,8 +48,12 @@
     margin: 0 auto;
   }
 
-
-
+  /* Styles for the loading text */
+  .loading-text {
+    font-size: 1em;
+    color: #666;
+    margin: 10px 0;
+  }
 
   /* General styling for the container */
   .controls-container {
@@ -72,6 +76,25 @@
     color: #333;
   }
 
+  /* Button styles */
+  .controls-container button {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition:
+      background-color 0.3s ease,
+      transform 0.2s ease;
+  }
+
+  .controls-container button:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+  }
+
   /* Input and Select Styles */
   .controls-container label {
     font-size: 1rem;
@@ -79,6 +102,7 @@
     color: #333;
   }
 
+  .controls-container input,
   .controls-container select {
     width: 100%;
     padding: 8px;
@@ -89,6 +113,7 @@
     transition: border-color 0.3s ease;
   }
 
+  .controls-container input:focus,
   .controls-container select:focus {
     border-color: #ff4444;
     box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);

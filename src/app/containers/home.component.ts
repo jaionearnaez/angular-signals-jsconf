@@ -1,6 +1,6 @@
 import { JsonPipe, TitleCasePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { PokeImgComponent } from '../components/poke-img.component';
@@ -12,6 +12,17 @@ import { PokemonImagePipe } from '../pipes/pokemon-image.pipe';
   imports: [PokemonImagePipe, JsonPipe, PokeImgComponent, TitleCasePipe],
   template: `
     <div class="controls-container">
+      <button>
+        Clicka para resetear el filtro ({{ queryLimit() || defaultLimit }}) (no
+        funciona)
+      </button>
+
+      <label for="selectedLimit"
+        >Introduce el número máximo de Pokemons que quieres ver (no
+        funciona):</label
+      >
+      <input id="selectedLimit" type="number" [value]="queryLimit()" />
+
       <label
         >Selecciona la habilidad:
         <select (change)="onSelectAbility($event)">
@@ -36,6 +47,9 @@ import { PokemonImagePipe } from '../pipes/pokemon-image.pipe';
     } @else if (pokedex.error()) {
       <p>{{ pokedex.error() | json }}</p>
     } @else if (pokedex.hasValue()) {
+      <div class="controls-container">
+        <p>{{ limitDescription() }}</p>
+      </div>
       <div class="pokemon-grid">
         @for (pokemon of pokedex.value(); track pokemon.name) {
           <div class="pokemon-card" #pokecard>
@@ -56,6 +70,11 @@ export class HomeComponent {
   defaultLimit: Readonly<number> = 6;
 
   selectedAbility = signal<string | null>(null);
+
+  //_J ejemplo simple de computed signal
+  limitDescription = computed(() => {
+    return 'Te muestro ' + this.queryLimit() + ' pokemon';
+  });
 
   private http = inject(HttpClient);
 
