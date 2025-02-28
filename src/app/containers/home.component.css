@@ -47,4 +47,62 @@
     display: block;
     margin: 0 auto;
   }
+
+
+
+
+  /* General styling for the container */
+  .controls-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    margin: 20px;
+  }
+
+  /* Styles for the text */
+  .controls-container p {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+  }
+
+  /* Input and Select Styles */
+  .controls-container label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .controls-container select {
+    width: 100%;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+
+  .controls-container select:focus {
+    border-color: #ff4444;
+    box-shadow: 0 0 5px rgba(255, 68, 68, 0.5);
+  }
+
+  /* Styles for the select dropdown */
+  .controls-container select {
+    background-color: white;
+    cursor: pointer;
+  }
+
+  /* Loading Text */
+  .controls-container .loading-text {
+    font-size: 1rem;
+    color: #666;
+  }
 }
