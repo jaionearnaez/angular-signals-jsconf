@@ -1,0 +1,7 @@
+{
+  "singleQuote": true,
+  "files": "*.component.ts",
+  "options": {
+    "htmlWhitespaceSensitivity": "ignore"
+  }
+}
