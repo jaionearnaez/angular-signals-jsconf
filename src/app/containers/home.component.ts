@@ -80,10 +80,11 @@ export class HomeComponent {
   defaultLimit: Readonly<number> = 6;
 
   selectedAbility = signal<string | null>(null);
-  
+
   reset = signal<boolean>(true);
 
   limit = linkedSignal({
+    // source: this.selectedAbility,
     source: this.reset,
     computation: () => {
       return this.queryLimit() ?? this.defaultLimit;
@@ -91,8 +92,23 @@ export class HomeComponent {
   });
 
   //_J ejemplo simple de computed signal
+  // limitDescription = computed(() => {
+  //   return 'Te muestro ' + this.limit() + ' pokemon';
+  // });
+
+  //_J ejemplo más complejo con varias señales dentro del cómputo de esta señal
   limitDescription = computed(() => {
-    return 'Te muestro ' + this.limit() + ' pokemon';
+    let text =
+      this.limit().toString() === '1'
+        ? 'Te muestro el primero'
+        : 'Te muestro los primeros ' + this.limit();
+    if (this.selectedAbility()) {
+      const abilityName = this.abilities
+        .value()
+        ?.results.find(({ url }) => url === this.selectedAbility());
+      text = text + ', de habilidad ' + abilityName?.name;
+    }
+    return text;
   });
 
   private http = inject(HttpClient);
