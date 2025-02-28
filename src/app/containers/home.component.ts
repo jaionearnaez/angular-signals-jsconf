@@ -1,6 +1,6 @@
 import { JsonPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { PokeImgComponent } from '../components/poke-img.component';
@@ -31,12 +31,16 @@ import { PokemonImagePipe } from '../pipes/pokemon-image.pipe';
   styleUrl: './home.component.css',
 })
 export class HomeComponent {
+  queryLimit = input<number>();
+
   private http = inject(HttpClient);
 
   pokedex = rxResource({
-    loader: () => {
-      console.log('loading???');
-      const limit = 1000000;
+    request: () => ({
+      limit: this.queryLimit(),
+    }),
+    loader: ({request}) => {
+      const limit = request.limit ?? 1000000;
       return this.http
         .get<PokeResponse>(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}`)
         .pipe(
