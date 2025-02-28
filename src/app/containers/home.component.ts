@@ -1,6 +1,13 @@
 import { JsonPipe, TitleCasePipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  linkedSignal,
+  signal,
+} from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { PokeImgComponent } from '../components/poke-img.component';
@@ -12,16 +19,19 @@ import { PokemonImagePipe } from '../pipes/pokemon-image.pipe';
   imports: [PokemonImagePipe, JsonPipe, PokeImgComponent, TitleCasePipe],
   template: `
     <div class="controls-container">
-      <button>
-        Clicka para resetear el filtro ({{ queryLimit() || defaultLimit }}) (no
-        funciona)
+      <button (click)="toggleReset()">
+        Clicka para resetear el filtro ({{ queryLimit() || defaultLimit }})
       </button>
 
       <label for="selectedLimit"
-        >Introduce el número máximo de Pokemons que quieres ver (no
-        funciona):</label
+        >Introduce el número máximo de Pokemons que quieres ver:</label
       >
-      <input id="selectedLimit" type="number" [value]="queryLimit()" />
+      <input
+        id="selectedLimit"
+        type="number"
+        [value]="limit()"
+        (input)="updateNumber($event)"
+      />
 
       <label
         >Selecciona la habilidad:
@@ -70,10 +80,19 @@ export class HomeComponent {
   defaultLimit: Readonly<number> = 6;
 
   selectedAbility = signal<string | null>(null);
+  
+  reset = signal<boolean>(true);
+
+  limit = linkedSignal({
+    source: this.reset,
+    computation: () => {
+      return this.queryLimit() ?? this.defaultLimit;
+    },
+  });
 
   //_J ejemplo simple de computed signal
   limitDescription = computed(() => {
-    return 'Te muestro ' + this.queryLimit() + ' pokemon';
+    return 'Te muestro ' + this.limit() + ' pokemon';
   });
 
   private http = inject(HttpClient);
@@ -81,7 +100,7 @@ export class HomeComponent {
   pokedex = rxResource({
     request: () => ({
       selectedAbility: this.selectedAbility(),
-      limit: this.queryLimit(),
+      limit: this.limit(),
     }),
     loader: ({ request }) => {
       const limit = request.limit ?? 1000000;
@@ -119,5 +138,17 @@ export class HomeComponent {
   onSelectAbility(event: Event) {
     const target = event.target as HTMLSelectElement; // 💕typescript
     this.selectedAbility.set(target.value);
+  }
+
+  updateNumber(value: Event) {
+    const input = value.target as HTMLInputElement; // 💕typescript
+    const newValue = input.value
+      ? parseInt(input.value, 10)
+      : this.defaultLimit;
+    this.limit.set(newValue || this.defaultLimit);
+  }
+
+  toggleReset() {
+    this.reset.set(!this.reset()); // Toggle true/false
   }
 }
